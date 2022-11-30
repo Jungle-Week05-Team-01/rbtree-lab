@@ -68,11 +68,9 @@ node_t* rbtree_insert(rbtree* t, const key_t key) {
   return z;
 }
 
-//nil도 left, right있고 각각 NULL을 가리키고 있음에 유의
 node_t* rbtree_find(const rbtree* t, const key_t key) {
-  // TODO: implement find
   node_t* Node = t->root;
-  while (Node != t->nil) { // Node == t->nil이 됐나봄.. t->root == t->nil이라
+  while (Node != t->nil) {
     if (Node->key == key) {
       return Node;
     }
@@ -87,7 +85,7 @@ node_t* rbtree_find(const rbtree* t, const key_t key) {
 }
 
 void rotate_right(rbtree* t, node_t* p) {
-  node_t* leftChild = p->left; // 연결 관계만 열라 바꿔주는 것임
+  node_t* leftChild = p->left;
   p->left = leftChild->right;
   if (leftChild->right != t->nil) {
     leftChild->right->parent = p;
@@ -109,7 +107,7 @@ void rotate_right(rbtree* t, node_t* p) {
 }
 
 void rotate_left(rbtree* t, node_t* p) {
-  node_t* rightChild = p->right; // 연결 관계만 열라 바꿔주는 것임
+  node_t* rightChild = p->right; 
   p->right = rightChild->left;
   if (rightChild->left != t->nil) {
     rightChild->left->parent = p;
@@ -132,17 +130,17 @@ void rotate_left(rbtree* t, node_t* p) {
 }
 
 void insert_fix(rbtree* t, node_t* z) {
-  while (z->parent->color == RBTREE_RED) { //부모가 빨강일 때 계속 돌려
-    if (z->parent == z->parent->parent->left) { //부모가 할배의 왼쪽일때
-      node_t* y = z->parent->parent->right; //엉클은 할배의 오른쪽이라 하자
-      if (y->color == RBTREE_RED) { //엉클이 빨강이면
+  while (z->parent->color == RBTREE_RED) {
+    if (z->parent == z->parent->parent->left) { 
+      node_t* y = z->parent->parent->right; 
+      if (y->color == RBTREE_RED) { 
         z->parent->color = RBTREE_BLACK;
         y->color = RBTREE_BLACK;
         z->parent->parent->color = RBTREE_RED;
 
-        z = z->parent->parent; //일단 급한불 끄고 다시 불난 곳으로 가자고 ㅋㅋ
+        z = z->parent->parent; //일단 급한불 끄고 다시 불난 곳으로 가자
       }
-      else { //만약 엉클이 검정색이면
+      else { 
         if (z == z->parent->right) {
           z = z->parent;
           rotate_left(t, z);
